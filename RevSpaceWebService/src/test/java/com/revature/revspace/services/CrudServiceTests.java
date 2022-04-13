@@ -166,7 +166,7 @@ public class CrudServiceTests
 		Like expectedLike = new Like();
 		expectedLike.setLikeId(id);
 		Mockito.when(this.lr.save(like)).thenReturn(expectedLike);
-		Like actualLike = ls.add(like);
+		Like actualLike = ls.addLike(like);
 		Assertions.assertEquals(expectedLike, actualLike);
 	}
 
@@ -178,7 +178,7 @@ public class CrudServiceTests
 		expectedLike.setLikeId(id);
 		Optional<Like> optionalLike = Optional.of(expectedLike);
 		Mockito.when(this.lr.findById(id)).thenReturn(optionalLike);
-		Like actualLike = this.ls.get(id);
+		Like actualLike = this.ls.getLikeById(id);
 		Assertions.assertEquals(id, actualLike.getLikeId());
 	}
 }

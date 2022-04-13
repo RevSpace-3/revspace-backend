@@ -2,6 +2,7 @@ package com.revature.revspace.models;
 
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,4 +37,8 @@ public class GroupInfo
 	@OneToOne
 	@JoinColumn(name="userId")
 	private User owner;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="post_id")
+	private Post postHead;
 }

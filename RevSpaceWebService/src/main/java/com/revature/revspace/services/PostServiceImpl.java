@@ -154,5 +154,58 @@ public class PostServiceImpl implements PostService {
         childrenComments.addAll(childrenOfChildren);
         return childrenComments;
     }
+    
+    // Since they didnt comment anything I'll help you out...
+    // These posts work like a linkedlist/tree. We have a head pointer to the parent and they're daisy chained together
+    // So in this function I'm passing the postID of the head of my group. Iterating through and creating a list of all
+    public Set<Post> getPostsByGroupId(int id)
+    {
+    	Set<Post> pList = null; // Our result list
+    	Set<Post> rList = null; // Our list returned by the repository.
+    	
+    	try
+    	{
+    		rList = new HashSet((List<Post>)postRepo.findAll()); // Get all posts, this is slow and gross but I'm not sure how to approach this otherwise.
+    		pList = new HashSet<Post>();
+    		
+    		for(Post p : rList) // Iterate through
+    		{
+    			if(!p.isComment()) // Ignore comments for now, we want everything else.
+    			{
+    				Set<Post> tList = new HashSet<>(); // Its a set so we can prevent duplicate adds.
+    				Post temp = findHead(p, tList);
+    				
+    				if(temp.getPostId() == id)
+    				{
+    					pList.addAll( tList ); 	// Add all our chained nodes to our result
+    					pList.add(temp); 		// add the head in there for good measure.
+
+    					for(Post p2 : tList)
+    					{
+    						List<Post> yep = new ArrayList<Post>();
+	    					pList.addAll( this.selectedRelatedComments(p2, yep) );
+    					}
+    					//break;
+    				}
+    			}
+    		}
+    	}catch(Exception e)
+    	{
+    		
+    	}
+    	
+    	return pList;
+    }
+    // Recursive helper method, I'm moving through the parents looking for the head and keeping track of the object I hit on the way...
+    private Post findHead(Post post, Set<Post> result)
+    {
+    	if(post.getParentPost() != null)
+    	{
+    		result.add(post);
+    		return findHead( post.getParentPost(), result );
+    	}
+    	else
+    		return post;
+    }
 
 }

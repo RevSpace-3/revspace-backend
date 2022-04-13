@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class PostController
@@ -108,6 +109,24 @@ public class PostController
         }else {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
+    }
+    
+    @GetMapping("/posts/GroupPosts/{groupHeadId}")
+    public ResponseEntity<List<Post>> getPostsByGroupId(@PathVariable("groupHeadId") int id)
+    {
+    	ResponseEntity<List<Post>> res = null;
+    	Set<Post> tSet = pos.getPostsByGroupId(id);
+    	List<Post> pList = new ArrayList<Post>();
+    	
+    	if(id <= 0 || tSet == null)
+    		res = new ResponseEntity<List<Post>>(HttpStatus.NO_CONTENT);
+    	else
+    	{
+    		pList.addAll(tSet);
+    		res = new ResponseEntity<List<Post>>(pList, HttpStatus.OK);
+    	}
+    	
+    	return res;
     }
 
     //Update Post By ID
