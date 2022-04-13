@@ -170,24 +170,14 @@ public class PostServiceImpl implements PostService {
     		
     		for(Post p : rList) // Iterate through
     		{
-    			if(!p.isComment()) // Ignore comments for now, we want everything else.
-    			{
-    				Set<Post> tList = new HashSet<>(); // Its a set so we can prevent duplicate adds.
-    				Post temp = findHead(p, tList);
-    				
-    				if(temp.getPostId() == id)
-    				{
-    					pList.addAll( tList ); 	// Add all our chained nodes to our result
-    					pList.add(temp); 		// add the head in there for good measure.
-
-    					for(Post p2 : tList)
-    					{
-    						List<Post> yep = new ArrayList<Post>();
-	    					pList.addAll( this.selectedRelatedComments(p2, yep) );
-    					}
-    					//break;
-    				}
-    			}
+				Set<Post> tList = new HashSet<>(); // Its a set so we can prevent duplicate adds.
+				Post temp = findHead(p, tList);
+				
+				if(temp.getPostId() == id)
+				{
+					pList.addAll( tList ); 	// Add all our chained nodes to our result
+					pList.add(temp); 		// add the head in there for good measure.
+				}
     		}
     	}catch(Exception e)
     	{
