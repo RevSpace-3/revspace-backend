@@ -160,23 +160,24 @@ public class PostServiceImpl implements PostService {
     // So in this function I'm passing the postID of the head of my group. Iterating through and creating a list of all
     public Set<Post> getPostsByGroupId(int id)
     {
-    	Set<Post> pList = null; // Our result list
-    	Set<Post> rList = null; // Our list returned by the repository.
+    	Set<Post> result = null; // Our result list
+    	List<Post> rList = null; // Our list returned by the repository.
     	
     	try
     	{
-    		rList = new HashSet((List<Post>)postRepo.findAll()); // Get all posts, this is slow and gross but I'm not sure how to approach this otherwise.
-    		pList = new HashSet<Post>();
+    		rList = (List<Post>)postRepo.findAll(); // Get all posts, this is slow and gross but I'm not sure how to approach this otherwise.
+    		result = new HashSet<Post>();
     		
     		for(Post p : rList) // Iterate through
     		{
-				Set<Post> tList = new HashSet<>(); // Its a set so we can prevent duplicate adds.
-				Post temp = findHead(p, tList);
+    			Post temp = findHead(p); // Find the head of the list
 				
-				if(temp.getPostId() == id)
+				if(temp.getPostId() == id) // If the id matches our group then, create a list and store the path
 				{
-					pList.addAll( tList ); 	// Add all our chained nodes to our result
-					pList.add(temp); 		// add the head in there for good measure.
+		    		Set<Post> path = new HashSet<>(); // Its a set so we can prevent duplicate adds.
+		    		
+		    		getPathToHead(p, path);		// Create a list leading to the head
+		    		result.addAll( path ); 	// Add all our chained nodes to our result
 				}
     		}
     	}catch(Exception e)
@@ -184,16 +185,24 @@ public class PostServiceImpl implements PostService {
     		
     	}
     	
-    	return pList;
+    	return result;
     }
     // Recursive helper method, I'm moving through the parents looking for the head and keeping track of the object I hit on the way...
-    private Post findHead(Post post, Set<Post> result)
+    private Post getPathToHead(Post post, Set<Post> result)
     {
     	if(post.getParentPost() != null)
     	{
     		result.add(post);
-    		return findHead( post.getParentPost(), result );
+    		return getPathToHead( post.getParentPost(), result );
     	}
+    	else
+    		return post;
+    }
+    // This is what we use to check if we need to create a list, otherwise I'm ditching a bunch of posts to the gc for no reason
+    private Post findHead(Post post)
+    {
+    	if(post.getParentPost() != null)
+    		return findHead(post.getParentPost());
     	else
     		return post;
     }
