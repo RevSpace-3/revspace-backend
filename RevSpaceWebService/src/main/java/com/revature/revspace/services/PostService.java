@@ -14,5 +14,5 @@ public interface PostService extends CrudService<Post, Integer, PostRepo>{
     List<List<Post>> pullPostsListFollowing(User currentUser);
     public List<Post> selectedRelatedComments (Post parentsPost, List<Post> allComments);
     
-    public Set<Post> getPostsByGroupId(int id);
+    public  Set<Set<Post>> getPostsByGroupId(int id);
 }

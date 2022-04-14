@@ -63,5 +63,23 @@ public class GroupInfoServiceImpl implements GroupInfoService
 		
 		return rList;
 	}
+	
+	@Override
+	public boolean deleteGroupById(int id)
+	{
+		boolean result = false;
+		try
+		{
+			if(infoRepo.existsById(id))
+			{
+				result = true;
+				infoRepo.deleteById(id);
+			}
+		}catch(Exception e)
+		{
+			
+		}
+		return false;
+	}
 
 }

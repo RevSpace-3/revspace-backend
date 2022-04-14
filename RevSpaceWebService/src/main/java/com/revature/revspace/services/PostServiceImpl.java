@@ -158,15 +158,15 @@ public class PostServiceImpl implements PostService {
     // Since they didnt comment anything I'll help you out...
     // These posts work like a linkedlist/tree. We have a head pointer to the parent and they're daisy chained together
     // So in this function I'm passing the postID of the head of my group. Iterating through and creating a list of all
-    public Set<Post> getPostsByGroupId(int id)
+    public Set<Set<Post>> getPostsByGroupId(int id)
     {
-    	Set<Post> result = null; // Our result list
+    	Set<Set<Post>> result = null; // Our result list
     	List<Post> rList = null; // Our list returned by the repository.
     	
     	try
     	{
     		rList = (List<Post>)postRepo.findAll(); // Get all posts, this is slow and gross but I'm not sure how to approach this otherwise.
-    		result = new HashSet<Post>();
+    		result = new HashSet<Set<Post>>();
     		
     		for(Post p : rList) // Iterate through
     		{
@@ -177,7 +177,7 @@ public class PostServiceImpl implements PostService {
 		    		Set<Post> path = new HashSet<>(); // Its a set so we can prevent duplicate adds.
 		    		
 		    		getPathToHead(p, path);		// Create a list leading to the head
-		    		result.addAll( path ); 	// Add all our chained nodes to our result
+		    		result.add(path); 	// Add all our chained nodes to our result
 				}
     		}
     	}catch(Exception e)

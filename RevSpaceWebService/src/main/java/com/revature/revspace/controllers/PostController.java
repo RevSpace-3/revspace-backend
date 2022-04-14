@@ -112,22 +112,24 @@ public class PostController
     }
     
     @GetMapping("/posts/GroupPosts/{groupHeadId}")
-    public ResponseEntity<List<Post>> getPostsByGroupId(@PathVariable("groupHeadId") int id)
+    public ResponseEntity<Set<Set<Post>>> getPostsByGroupId(@PathVariable("groupHeadId") int id)
     {
-    	ResponseEntity<List<Post>> res = null;
-    	Set<Post> tSet = pos.getPostsByGroupId(id);
+    	ResponseEntity<Set<Set<Post>>> res = null;
+    	Set<Set<Post>> tSet = pos.getPostsByGroupId(id);
     	List<Post> pList = new ArrayList<Post>();
     	
     	if(id <= 0 || tSet == null)
-    		res = new ResponseEntity<List<Post>>(HttpStatus.NO_CONTENT);
+    		res = new ResponseEntity<Set<Set<Post>>>(HttpStatus.NO_CONTENT);
     	else
     	{
-    		pList.addAll(tSet);
-    		res = new ResponseEntity<List<Post>>(pList, HttpStatus.OK);
+    		//pList.add(tSet);
+    		res = new ResponseEntity<Set<Set<Post>>>(tSet, HttpStatus.OK);
     	}
     	
     	return res;
     }
+    
+    
 
     //Update Post By ID
     @PutMapping(value = "/posts", consumes = "application/json", produces = "application/json")
