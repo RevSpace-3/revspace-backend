@@ -208,5 +208,27 @@ public class GroupThreadServiceImpl implements GroupThreadService
 		
 		return rList;
 	}
-
+	
+	@Override
+	public boolean deleteAllByInfoId(int id)
+	{
+		boolean result = false;
+		try
+		{
+			List<GroupThread> repoList = (List<GroupThread>) repo.findAll();
+			
+			for(GroupThread t : repoList)
+			{
+				if(t.getGroupInfo().getInfoId() == id)
+				{
+					repo.delete(t);
+				}
+			}
+			
+		}catch(Exception e)
+		{
+			
+		}
+		return false;
+	}
 }

@@ -73,6 +73,7 @@ public class GroupInfoServiceImpl implements GroupInfoService
 			if(infoRepo.existsById(id))
 			{
 				result = true;
+				
 				infoRepo.deleteById(id);
 			}
 		}catch(Exception e)

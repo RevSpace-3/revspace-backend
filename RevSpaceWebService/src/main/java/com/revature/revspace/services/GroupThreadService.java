@@ -17,4 +17,5 @@ public interface GroupThreadService
 	public List<GroupThread> getGroupThreadsByInfo(int id);
 	public List<GroupInfo> getGroupThreadsByUser(int id);
 	public List<GroupInfo> getOtherGroups(int id);
+	public boolean deleteAllByInfoId(int id);
 }

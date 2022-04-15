@@ -37,7 +37,7 @@ public class GroupThread
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int groupId;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="infoId")
 	private GroupInfo groupInfo;
 	

@@ -31,6 +31,9 @@ public class GroupController
 	@Autowired
 	private GroupThreadService service;
 	
+	@Autowired
+	private GroupInfoService iService;
+	
 	@Autowired 
 	GroupPostService pService;
 	
@@ -139,14 +142,20 @@ public class GroupController
 	// Group Info
 	
 	@DeleteMapping("/Delete/{id}")
-	public ResponseEntity<String> deleteGroupInfo(@PathVariable("id") int id)
+	public ResponseEntity<String> deleteGroupInfo(@PathVariable("id") int id) // Always returns false
 	{
 		ResponseEntity<String> res = null;
+		
+		// Delete the user threads to the group /
+		boolean f = service.deleteAllByInfoId(id);
+		
+		// Delete the actual group
+		boolean flag = iService.deleteGroupById(id);
 		
 		if(id <= 0 )
 			res = new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 		else
-			res = new ResponseEntity<String>("Deleted Object " + id + " was " , HttpStatus.OK);
+			res = new ResponseEntity<String>("Deleted Object " + id + " was " + (flag ? "successful" : "unsuccessful"), HttpStatus.OK);
 		
 		return res;
 	}
@@ -186,8 +195,11 @@ public class GroupController
 		if(id <= 0)
 			res = new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 		else
+		{
+			boolean flag = pService.deleteGroupPost(id);
 			res = new ResponseEntity<String>(
-				"Result of deletePost on id: " + id + " was " + (pService.deleteGroupPost(id) ? "successful" : "unsuccessful"), HttpStatus.OK);
+				"Result of deletePost on id: " + id + " was " + (flag ? "successful" : "unsuccessful"), HttpStatus.OK);
+		}
 		
 		return res;
 	}
