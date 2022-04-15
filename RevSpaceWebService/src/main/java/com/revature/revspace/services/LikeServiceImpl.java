@@ -3,6 +3,7 @@ package com.revature.revspace.services;
 import com.revature.revspace.models.Like;
 import com.revature.revspace.repositories.LikeRepo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,6 +96,33 @@ public class LikeServiceImpl implements LikeService{
 		}
 		
 		return res;
+	}
+	
+	@Override 
+	public List<Like> getPostLikes(int id)
+	{
+		List<Like> repoList = null;
+		List<Like> result = null;
+		
+		
+		try
+		{
+			repoList = (List<Like>) likeRepo.findAll();
+			
+			if(!repoList.isEmpty())
+				result = new ArrayList<Like>();
+			for(Like l : repoList)
+			{
+				if(l.getPostId().getPostId() == id)
+				{
+					result.add(l);
+				}
+			}
+		}catch(Exception e)
+		{
+			
+		}
+		return result;
 	}
 
 

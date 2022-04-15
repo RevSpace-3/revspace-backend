@@ -112,23 +112,35 @@ public class PostController
     }
     
     @GetMapping("/posts/GroupPosts/{groupHeadId}")
-    public ResponseEntity<Set<Set<Post>>> getPostsByGroupId(@PathVariable("groupHeadId") int id)
+    public ResponseEntity<List<Post>> getPostsByGroupId(@PathVariable("groupHeadId") int id)
     {
-    	ResponseEntity<Set<Set<Post>>> res = null;
-    	Set<Set<Post>> tSet = pos.getPostsByGroupId(id);
+    	ResponseEntity<List<Post>> res = null;
+    	List<Post> tSet = pos.getPostsByGroupId(id);
     	List<Post> pList = new ArrayList<Post>();
     	
     	if(id <= 0 || tSet == null)
-    		res = new ResponseEntity<Set<Set<Post>>>(HttpStatus.NO_CONTENT);
+    		res = new ResponseEntity<List<Post>>(HttpStatus.NO_CONTENT);
     	else
     	{
     		//pList.add(tSet);
-    		res = new ResponseEntity<Set<Set<Post>>>(tSet, HttpStatus.OK);
+    		res = new ResponseEntity<List<Post>>(tSet, HttpStatus.OK);
     	}
     	
     	return res;
     }
-    
+    @GetMapping("/posts/GroupComments/{groupId}")
+    public ResponseEntity<List<Post>> getGroupComments(@PathVariable("groupId") int id)
+    {
+    	ResponseEntity<List<Post>> res = null;
+    	List<Post> comments = pos.getCommentsByGroupId(id);
+    	
+    	if(comments.isEmpty() || comments == null)
+    		res = new ResponseEntity<List<Post>>(HttpStatus.NO_CONTENT);
+    	else
+    		res = new ResponseEntity<List<Post>>(comments, HttpStatus.OK);
+    	
+    	return res;
+    }
     
 
     //Update Post By ID

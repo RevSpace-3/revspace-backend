@@ -98,6 +98,20 @@ public class LikeController {
     	return res;
     }
     
+    @GetMapping("/likes/GroupLikes/{postId}")
+    public ResponseEntity<List<Like>> getGroupLikes(@PathVariable("postId") int id)
+    {
+    	ResponseEntity<List<Like>> res = null;
+    	List<Like> temp = ls.getPostLikes(id);
+    	
+    	if(temp == null || temp.isEmpty())
+    		res = new ResponseEntity<List<Like>>(HttpStatus.NO_CONTENT);
+    	else
+    		res = new ResponseEntity<List<Like>>(temp, HttpStatus.OK);
+    	
+    	return res;
+    }
+    
     /***********************************************************************************************/
     // Previous system. To be removed. Here for now as a backup
 //    @GetMapping(value = "/likes/{id}")

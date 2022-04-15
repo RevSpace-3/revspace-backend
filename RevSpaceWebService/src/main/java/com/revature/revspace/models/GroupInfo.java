@@ -39,6 +39,6 @@ public class GroupInfo
 	private User owner;
 	
 	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="post_id")
-	private Post postHead;
+	@JoinColumn(name="postId")
+	private GroupPost postHead;
 }

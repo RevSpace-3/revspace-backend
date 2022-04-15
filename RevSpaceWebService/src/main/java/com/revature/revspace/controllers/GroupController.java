@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.revspace.models.GroupInfo;
+import com.revature.revspace.models.GroupPost;
 import com.revature.revspace.models.GroupThread;
 import com.revature.revspace.models.User;
 import com.revature.revspace.services.GroupInfoService;
+import com.revature.revspace.services.GroupPostService;
 import com.revature.revspace.services.GroupThreadService;
 
 @RestController
@@ -29,6 +31,9 @@ public class GroupController
 	@Autowired
 	private GroupThreadService service;
 	
+	@Autowired 
+	GroupPostService pService;
+	
 	
 	@PostMapping
 	public ResponseEntity<String> addGroupThread(@RequestBody GroupThread obj)
@@ -38,7 +43,7 @@ public class GroupController
 		if(obj == null)
 			res = new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 		else
-			res = new ResponseEntity<String>( "Adding GroupThread in GroupController |\nResult ->" + service.addGroupThread(obj) , HttpStatus.OK); 
+			res = new ResponseEntity<String>( "Adding GroupThread in GroupController |\nResult ->" + service.addGroupThread(obj), HttpStatus.OK); 
 		
 		return res;
 	}
@@ -85,6 +90,9 @@ public class GroupController
 		return res;
 	}
 	
+	/*************************************************************************************************************/
+	// Threads
+	
 	@GetMapping("/ByUnique")
 	public ResponseEntity<List<GroupThread>> getUniqueGroupThreads()
 	{
@@ -98,20 +106,7 @@ public class GroupController
 		
 		return res;
 	}
-	
-	@GetMapping("/GetOthers/{id}")
-	public ResponseEntity<List<GroupInfo>> getOthers(@PathVariable("id") int id)
-	{
-		ResponseEntity<List<GroupInfo>> res = null;
-		List<GroupInfo> gList = service.getOtherGroups(id);
-		
-		if(gList == null)
-			res = new ResponseEntity<List<GroupInfo>>(HttpStatus.NO_CONTENT);
-		else
-			res = new ResponseEntity<List<GroupInfo>>(gList, HttpStatus.OK); 
-		
-		return res;
-	}
+
 	@GetMapping("/GetThreads/{infoId}")
 	public ResponseEntity<List<GroupThread>> getThreadsByInfo(@PathVariable("infoId") int id)
 	{
@@ -139,6 +134,9 @@ public class GroupController
 		
 		return res;
 	}
+
+	/*************************************************************************************************************/
+	// Group Info
 	
 	@DeleteMapping("/Delete/{id}")
 	public ResponseEntity<String> deleteGroupInfo(@PathVariable("id") int id)
@@ -149,6 +147,61 @@ public class GroupController
 			res = new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 		else
 			res = new ResponseEntity<String>("Deleted Object " + id + " was " , HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/GetOthers/{id}")
+	public ResponseEntity<List<GroupInfo>> getOthers(@PathVariable("id") int id)
+	{
+		ResponseEntity<List<GroupInfo>> res = null;
+		List<GroupInfo> gList = service.getOtherGroups(id);
+		
+		if(gList == null)
+			res = new ResponseEntity<List<GroupInfo>>(HttpStatus.NO_CONTENT);
+		else
+			res = new ResponseEntity<List<GroupInfo>>(gList, HttpStatus.OK); 
+		
+		return res;
+	}
+	/*************************************************************************************************************/
+	// Group Posts, this really should be its own controller. But I've had to redo this like 3 times. So its here.
+	@PostMapping("/GroupPosts/Add")
+	public ResponseEntity<String> addGroupPost(@RequestBody GroupPost post)
+	{
+		ResponseEntity<String> res = null;
+		
+		if(post == null)
+			res = new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+		else
+			res = new ResponseEntity<String>(pService.addGroupPost(post), HttpStatus.OK);
+		
+		return res;
+	}
+	@DeleteMapping("/GroupPosts/Delete/{id}")
+	public ResponseEntity<String> deleteGroupPost(@PathVariable("id") int id)
+	{
+		ResponseEntity<String> res = null;
+		
+		if(id <= 0)
+			res = new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+		else
+			res = new ResponseEntity<String>(
+				"Result of deletePost on id: " + id + " was " + (pService.deleteGroupPost(id) ? "successful" : "unsuccessful"), HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/GroupPosts/{postHeadId}")
+	public ResponseEntity<List<GroupPost>> getGroupPosts(@PathVariable("postHeadId") int id)
+	{
+		ResponseEntity<List<GroupPost>> res = null;
+		List<GroupPost> resList = pService.getGroupPosts(id);
+		
+		if(id <= 0)
+			res = new ResponseEntity<List<GroupPost>>(HttpStatus.NO_CONTENT);
+		else
+			res = new ResponseEntity<List<GroupPost>>(resList, HttpStatus.OK);
 		
 		return res;
 	}

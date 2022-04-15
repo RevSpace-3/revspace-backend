@@ -14,4 +14,6 @@ public interface LikeService
 	public List<Like> getAllLikes();
 	public Like getLikeById(int id);
 	
+	public List<Like> getPostLikes(int id);
+	
 }
