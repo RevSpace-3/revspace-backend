@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 				.antMatchers(HttpMethod.PUT, "/likes").permitAll() 
 				.antMatchers(HttpMethod.DELETE, "/likes/**").permitAll() 
 				.antMatchers(HttpMethod.GET, "/groups/GroupPosts/**").permitAll()
-				.antMatchers(HttpMethod.GET, "/posts/GroupComments/**").permitAll()
+				//.antMatchers(HttpMethod.GET, "/posts/GroupComments/**").permitAll()
 				
 				/* and authorize any request with valid authentication */
 				.anyRequest().authenticated()

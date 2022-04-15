@@ -54,10 +54,13 @@ public class GroupPostServiceImpl implements GroupPostService
 				
 				if(headPointer.getPostId() == id) // if our heads match.
 				{
-					tempList.add(findTail(p));
+					GroupPost tempRef = findTail(p);
+					tempList.add(tempRef);
 				}
 			}	
 		}
+		if(!tempList.isEmpty())
+			result.addAll(tempList);
 		
 		return result;
 	}

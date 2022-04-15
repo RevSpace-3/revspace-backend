@@ -47,17 +47,17 @@ public class GroupPost
 	private User owner;
 	
 	// Forward post
-	@OneToOne
-	@JoinColumn(name="postId")
+	@ManyToOne
+	@JoinColumn(name="parentId", referencedColumnName="postId")//, insert="false", update="false")
 	private GroupPost parent;
 	
 	// Back Post
-	@OneToOne
-	@JoinColumn(name="postId")
+	@ManyToOne
+	@JoinColumn(name="childId", referencedColumnName="postId")
 	private GroupPost child;
 	
-	@ManyToMany
-	@JoinTable(name = "grouppostlikes", joinColumns = @JoinColumn(name = "like_Id"), inverseJoinColumns = @JoinColumn(name = "post_Id"))
-	private List<Like> likes;
+//	@ManyToMany
+//	@JoinTable(name = "grouppostlikes", joinColumns = @JoinColumn(name = "like_Id"), inverseJoinColumns = @JoinColumn(name = "post_Id"))
+//	private List<Like> likes;
 
 }
