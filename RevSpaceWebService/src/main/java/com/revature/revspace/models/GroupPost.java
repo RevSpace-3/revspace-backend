@@ -17,6 +17,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -56,8 +58,12 @@ public class GroupPost
 	@JoinColumn(name="childId", referencedColumnName="postId")
 	private GroupPost child;
 	
-//	@ManyToMany
-//	@JoinTable(name = "grouppostlikes", joinColumns = @JoinColumn(name = "like_Id"), inverseJoinColumns = @JoinColumn(name = "post_Id"))
-//	private List<Like> likes;
-
+	@ManyToMany
+	@JoinTable(name = "grouppostlikes", joinColumns = @JoinColumn(name = "like_Id"), inverseJoinColumns = @JoinColumn(name = "post_Id"))
+	private List<Like> likes;
+	
+	public GroupPost(String body, String date, int numLikes, boolean comFlag, User owner, GroupPost parent, GroupPost child)//, List<Like> list)
+	{
+		this(0, body, date, numLikes, comFlag, owner, parent, child, null);
+	}
 }

@@ -1,5 +1,6 @@
 package com.revature.revspace.controllers;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,11 @@ import com.revature.revspace.models.GroupInfo;
 import com.revature.revspace.models.GroupPost;
 import com.revature.revspace.models.GroupThread;
 import com.revature.revspace.models.User;
+import com.revature.revspace.models.httpmsgmodel.GroupPostMsg;
 import com.revature.revspace.services.GroupInfoService;
 import com.revature.revspace.services.GroupPostService;
 import com.revature.revspace.services.GroupThreadService;
+import com.revature.revspace.services.httpmessageservices.GroupPostMsgService;
 
 @RestController
 @CrossOrigin(origins = "http//localhost:4200")
@@ -36,6 +39,9 @@ public class GroupController
 	
 	@Autowired 
 	GroupPostService pService;
+	
+	@Autowired
+	GroupPostMsgService msgService;
 	
 	
 	@PostMapping
@@ -176,14 +182,20 @@ public class GroupController
 	/*************************************************************************************************************/
 	// Group Posts, this really should be its own controller. But I've had to redo this like 3 times. So its here.
 	@PostMapping("/GroupPosts/Add")
-	public ResponseEntity<String> addGroupPost(@RequestBody GroupPost post)
+	public ResponseEntity<GroupPostMsg> addGroupPost(@RequestBody GroupPostMsg post)
 	{
-		ResponseEntity<String> res = null;
+		ResponseEntity<GroupPostMsg> res = null;
 		
 		if(post == null)
-			res = new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+			res = new ResponseEntity<GroupPostMsg>(HttpStatus.NO_CONTENT);
 		else
-			res = new ResponseEntity<String>(pService.addGroupPost(post), HttpStatus.OK);
+		{
+			GroupPost object = pService.unboxMsg(post);
+			GroupPost resAdd = pService.addGroupPost(object);
+			GroupPostMsg response = new GroupPostMsg(resAdd); // I can do this on a single line this is just so you understand what is going on...
+			
+			res = new ResponseEntity<GroupPostMsg>(response, HttpStatus.OK);
+		}
 		
 		return res;
 	}
@@ -205,15 +217,19 @@ public class GroupController
 	}
 	
 	@GetMapping("/GroupPosts/{postHeadId}")
-	public ResponseEntity<List<GroupPost>> getGroupPosts(@PathVariable("postHeadId") int id)
+	public ResponseEntity<List<GroupPostMsg>> getGroupPosts(@PathVariable("postHeadId") int id)
 	{
-		ResponseEntity<List<GroupPost>> res = null;
-		List<GroupPost> resList = pService.getGroupPosts(id);
+		ResponseEntity<List<GroupPostMsg>> res = null;
+		List<GroupPostMsg> resList = msgService.convertAllGroupPosts( pService.getGroupPosts(id) );
+		
+		if(resList != null && !resList.isEmpty())
+			Collections.sort(resList,
+					(obj1, obj2) -> { return obj2.getPostId() - obj1.getPostId(); });
 		
 		if(id <= 0)
-			res = new ResponseEntity<List<GroupPost>>(HttpStatus.NO_CONTENT);
+			res = new ResponseEntity<List<GroupPostMsg>>(HttpStatus.NO_CONTENT);
 		else
-			res = new ResponseEntity<List<GroupPost>>(resList, HttpStatus.OK);
+			res = new ResponseEntity<List<GroupPostMsg>>(resList, HttpStatus.OK);
 		
 		return res;
 	}
