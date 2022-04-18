@@ -53,6 +53,25 @@ public class GroupThreadServiceImpl implements GroupThreadService
 
 		return res;
 	}
+	@Override
+	public boolean deleteGroupThread(int id) 
+	{
+		boolean res = false;
+
+		try
+		{
+			if(repo.existsById(id))
+			{
+				repo.deleteById(id);
+				res = true;
+			}
+		}catch(Exception e)
+		{
+			
+		}
+
+		return res;
+	}
 
 	@Override
 	public List<GroupThread> getAllGroupThreads() 

@@ -3,6 +3,7 @@ package com.revature.revspace.models;
 import java.sql.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +31,10 @@ public class GroupInfo
 	private int infoId;
 	
 	private String groupName;
+	
+	@Column(length=512)    
 	private String description;
+	
 	private String interests;
 	private String dateCreated;
 	

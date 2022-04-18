@@ -56,6 +56,21 @@ public class GroupController
 		
 		return res;
 	}
+	@DeleteMapping("/Delete/Thread{threadId}")
+	public ResponseEntity<String> deleteGroupThread(@PathVariable("threadId") int id)
+	{
+		ResponseEntity<String> res = null;
+		
+		if(id <= 0)
+			res = new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+		else
+		{
+			boolean flag = service.deleteGroupThread(id);
+			res = new ResponseEntity<String>("GroupThread " + id + (flag ? " was deleted" : " was not deleted"), HttpStatus.OK);
+		}
+		
+		return res;
+	}
 	
 	@GetMapping("/GetAll")
 	public ResponseEntity<List<GroupThread>> getAllGroupThreads()

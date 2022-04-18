@@ -9,6 +9,7 @@ import com.revature.revspace.models.User;
 public interface GroupThreadService 
 {
 	public GroupThread addGroupThread(GroupThread obj);
+	public boolean deleteGroupThread(int id);
 	public GroupThread updateGroupThread(GroupThread obj);
 	
 	public List<GroupThread> getAllGroupThreads();
