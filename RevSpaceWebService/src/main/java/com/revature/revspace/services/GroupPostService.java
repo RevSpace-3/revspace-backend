@@ -9,7 +9,7 @@ public interface GroupPostService
 {
 	public GroupPost addGroupPost(GroupPost post);
 	public boolean deleteGroupPost(int id);
-	public List<GroupPost> getGroupPosts(int id);
+	public List<List<GroupPost>> getGroupPosts(int id);
 	
 	public GroupPost unboxMsg(GroupPostMsg msg);
 	

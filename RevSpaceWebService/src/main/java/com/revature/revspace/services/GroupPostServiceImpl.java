@@ -41,10 +41,11 @@ public class GroupPostServiceImpl implements GroupPostService
 	}
 
 	@Override
-	public List<GroupPost> getGroupPosts(int id) 
+	public List<List<GroupPost>> getGroupPosts(int id) 
 	{
-		List<GroupPost> result = new ArrayList<GroupPost>();
-		Set<GroupPost> tempList = new HashSet<GroupPost>();
+		List<List<GroupPost>> result = new ArrayList<List<GroupPost>>(); 
+		Set<GroupPost> postList = new HashSet<GroupPost>();
+		Set<GroupPost> comList = new HashSet<GroupPost>();
 		List<GroupPost> repoList = (List<GroupPost>) repo.findAll();
 		
 		for(GroupPost p : repoList)
@@ -54,15 +55,20 @@ public class GroupPostServiceImpl implements GroupPostService
 			{
 				headPointer = findHead(p);
 				
-				if(headPointer.getPostId() == id) // if our heads match.
+				if(headPointer.getPostId() == id ) // if our heads match.
 				{
-					GroupPost tempRef = findTail(p);
-					tempList.add(tempRef);
+					if(p.isComment())
+						comList.add(p);
+					else
+						postList.add(p);
 				}
 			}	
 		}
-		if(!tempList.isEmpty())
-			result.addAll(tempList);
+		if(!postList.isEmpty())
+		{
+			result.add(new ArrayList<>(postList));
+			result.add(new ArrayList<>(comList));
+		}
 		
 		return result;
 	}

@@ -38,7 +38,7 @@ public class GroupInfo
 	@JoinColumn(name="userId")
 	private User owner;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name="postId")
 	private GroupPost postHead;
 }

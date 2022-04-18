@@ -182,19 +182,19 @@ public class GroupController
 	/*************************************************************************************************************/
 	// Group Posts, this really should be its own controller. But I've had to redo this like 3 times. So its here.
 	@PostMapping("/GroupPosts/Add")
-	public ResponseEntity<GroupPostMsg> addGroupPost(@RequestBody GroupPostMsg post)
+	public ResponseEntity<GroupPost> addGroupPost(@RequestBody GroupPost post)
 	{
-		ResponseEntity<GroupPostMsg> res = null;
+		ResponseEntity<GroupPost> res = null;
 		
 		if(post == null)
-			res = new ResponseEntity<GroupPostMsg>(HttpStatus.NO_CONTENT);
+			res = new ResponseEntity<GroupPost>(HttpStatus.NO_CONTENT);
 		else
 		{
-			GroupPost object = pService.unboxMsg(post);
-			GroupPost resAdd = pService.addGroupPost(object);
-			GroupPostMsg response = new GroupPostMsg(resAdd); // I can do this on a single line this is just so you understand what is going on...
+//			GroupPost object = pService.unboxMsg(post);
+//			GroupPost resAdd = pService.addGroupPost(object);
+//			GroupPostMsg response = new GroupPostMsg(resAdd); // I can do this on a single line this is just so you understand what is going on...
 			
-			res = new ResponseEntity<GroupPostMsg>(response, HttpStatus.OK);
+			res = new ResponseEntity<GroupPost>(pService.addGroupPost(post), HttpStatus.OK);
 		}
 		
 		return res;
@@ -217,20 +217,25 @@ public class GroupController
 	}
 	
 	@GetMapping("/GroupPosts/{postHeadId}")
-	public ResponseEntity<List<GroupPostMsg>> getGroupPosts(@PathVariable("postHeadId") int id)
+	public ResponseEntity<List<List<GroupPost>>> getGroupPosts(@PathVariable("postHeadId") int id)
 	{
-		ResponseEntity<List<GroupPostMsg>> res = null;
-		List<GroupPostMsg> resList = msgService.convertAllGroupPosts( pService.getGroupPosts(id) );
+		ResponseEntity<List<List<GroupPost>>> res = null;
+		List<List<GroupPost>> resList = pService.getGroupPosts(id);
 		
 		if(resList != null && !resList.isEmpty())
-			Collections.sort(resList,
-					(obj1, obj2) -> { return obj2.getPostId() - obj1.getPostId(); });
+		{
+			for(List<GroupPost> list : resList)
+			{
+				Collections.sort(list, (obj1, obj2) -> { return obj2.getPostId() - obj1.getPostId(); });
+			}
+		}
 		
 		if(id <= 0)
-			res = new ResponseEntity<List<GroupPostMsg>>(HttpStatus.NO_CONTENT);
+			res = new ResponseEntity<List<List<GroupPost>>> (HttpStatus.NO_CONTENT);
 		else
-			res = new ResponseEntity<List<GroupPostMsg>>(resList, HttpStatus.OK);
+			res = new ResponseEntity<List<List<GroupPost>>> (resList, HttpStatus.OK);
 		
 		return res;
 	}
+	
 }

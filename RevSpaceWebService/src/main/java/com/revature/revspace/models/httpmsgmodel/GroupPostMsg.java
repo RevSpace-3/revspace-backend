@@ -34,15 +34,15 @@ public class GroupPostMsg
 	private int childId;
 	
 	// Like logic -> To Do
-	private int[] likeIds;
+	//private int[] likeIds;
 	
 	public GroupPostMsg(GroupPost post) // 'Copy' Constructor, converting the model for a better json msg to pass
 	{
 		this(post.getPostId(), post.getBody(), post.getDatePosted(), post.getNumOfLikes(), post.isComment(), // Ref Ids are below
 				post.getOwner(), 												
 				post.getParent() != null ? post.getParent().getPostId() : -1, // -1 because its null.
-				post.getChild() != null ? post.getChild().getPostId(): -1, 
-				getIdsFromLikeModel(post.getLikes())); 
+				post.getChild() != null ? post.getChild().getPostId(): -1);//, 
+				//getIdsFromLikeModel(post.getLikes())); 
 	}
 	
 	// Conversion Helper function. I could do this in a lambda but thats harder to read.

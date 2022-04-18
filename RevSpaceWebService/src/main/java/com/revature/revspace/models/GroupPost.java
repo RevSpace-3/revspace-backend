@@ -3,6 +3,7 @@ package com.revature.revspace.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,31 +40,33 @@ public class GroupPost
 	private String body;
 	private String datePosted;
 	
-	private int numOfLikes = 0;
+	private int numOfLikes;
 	
-	@ColumnDefault("false")
-	private boolean isComment;
+	private boolean comment;
 	
 	@OneToOne
 	@JoinColumn(name="userId")
 	private User owner;
 	
 	// Forward post
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="parentId", referencedColumnName="postId")//, insert="false", update="false")
 	private GroupPost parent;
 	
 	// Back Post
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="childId", referencedColumnName="postId")
 	private GroupPost child;
 	
-	@ManyToMany
-	@JoinTable(name = "grouppostlikes", joinColumns = @JoinColumn(name = "like_Id"), inverseJoinColumns = @JoinColumn(name = "post_Id"))
-	private List<Like> likes;
+//	@ManyToMany(cascade = {
+//	        CascadeType.PERSIST, 
+//	        CascadeType.MERGE
+//	    })
+//	@JoinTable(name = "grouppostlikes", joinColumns = @JoinColumn(name = "like_Id"), inverseJoinColumns = @JoinColumn(name = "post_Id"))
+//	private List<Like> likes;
 	
 	public GroupPost(String body, String date, int numLikes, boolean comFlag, User owner, GroupPost parent, GroupPost child)//, List<Like> list)
 	{
-		this(0, body, date, numLikes, comFlag, owner, parent, child, null);
+		this(0, body, date, numLikes, comFlag, owner, parent, child);//, null);
 	}
 }
