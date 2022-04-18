@@ -9,7 +9,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.revature.revspace.models.GroupPost;
-import com.revature.revspace.models.httpmsgmodel.GroupPostMsg;
 import com.revature.revspace.repositories.GroupPostRepository;
 
 
@@ -81,35 +80,35 @@ public class GroupPostServiceImpl implements GroupPostService
 			return post;		
 	}
 	
-	private GroupPost findTail(GroupPost post)
-	{
-		if(post.getChild() != null)
-			return findTail(post.getChild());
-		else
-			return post;
-	}
+//	private GroupPost findTail(GroupPost post)
+//	{
+//		if(post.getChild() != null)
+//			return findTail(post.getChild());
+//		else
+//			return post;
+//	}
 	
-	public GroupPost unboxMsg(GroupPostMsg msg)
-	{
-		Optional<GroupPost> repoRes = repo.findById(msg.getPostId());
-		GroupPost res = null;
-		
-		if(repoRes.isPresent())
-			res = repoRes.get();
-		else
-		{
-			Optional<GroupPost> parent = repo.findById(msg.getParentId());
-			Optional<GroupPost> child = repo.findById(msg.getChildId());
-			
-			res = new GroupPost(msg.getBody(), msg.getDatePosted(), msg.getNumOfLikes(), msg.isComment(),
-								msg.getOwner(),
-								parent.isPresent() ? parent.get() : null,
-								child.isPresent() ? child.get() : null
-							);
-		}
-		
-		return res;
-	}
+//	public GroupPost unboxMsg(GroupPostMsg msg)
+//	{
+//		Optional<GroupPost> repoRes = repo.findById(msg.getPostId());
+//		GroupPost res = null;
+//		
+//		if(repoRes.isPresent())
+//			res = repoRes.get();
+//		else
+//		{
+//			Optional<GroupPost> parent = repo.findById(msg.getParentId());
+//			Optional<GroupPost> child = repo.findById(msg.getChildId());
+//			
+//			res = new GroupPost(msg.getBody(), "Where image should be", msg.getDatePosted(), msg.getNumOfLikes(), msg.isComment(),
+//								msg.getOwner(),
+//								parent.isPresent() ? parent.get() : null,
+//								child.isPresent() ? child.get() : null
+//							);
+//		}
+//		
+//		return res;
+//	}
 
 
 }

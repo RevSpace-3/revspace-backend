@@ -9,5 +9,6 @@ public interface GroupInfoService
 {
 	public List<GroupInfo> getGroupsByOwner(User obj);
 	public List<GroupInfo> getGroupsByOther(int id);
+	public List<GroupInfo> getGroupsByInterests(String interest);
 	public boolean deleteGroupById(int id);
 }

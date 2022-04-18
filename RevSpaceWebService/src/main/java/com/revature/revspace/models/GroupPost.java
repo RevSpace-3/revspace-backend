@@ -38,6 +38,7 @@ public class GroupPost
 	private int postId;
 	
 	private String body;
+	private String image;
 	private String datePosted;
 	
 	private int numOfLikes;
@@ -53,10 +54,6 @@ public class GroupPost
 	@JoinColumn(name="parentId", referencedColumnName="postId")//, insert="false", update="false")
 	private GroupPost parent;
 	
-	// Back Post
-	@OneToOne
-	@JoinColumn(name="childId", referencedColumnName="postId")
-	private GroupPost child;
 	
 //	@ManyToMany(cascade = {
 //	        CascadeType.PERSIST, 
@@ -65,8 +62,8 @@ public class GroupPost
 //	@JoinTable(name = "grouppostlikes", joinColumns = @JoinColumn(name = "like_Id"), inverseJoinColumns = @JoinColumn(name = "post_Id"))
 //	private List<Like> likes;
 	
-	public GroupPost(String body, String date, int numLikes, boolean comFlag, User owner, GroupPost parent, GroupPost child)//, List<Like> list)
+	public GroupPost(String body, String image, String date, int numLikes, boolean comFlag, User owner, GroupPost parent)//, List<Like> list)
 	{
-		this(0, body, date, numLikes, comFlag, owner, parent, child);//, null);
+		this(0, body, image, date, numLikes, comFlag, owner, parent);//, null);
 	}
 }

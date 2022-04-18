@@ -20,11 +20,9 @@ import com.revature.revspace.models.GroupInfo;
 import com.revature.revspace.models.GroupPost;
 import com.revature.revspace.models.GroupThread;
 import com.revature.revspace.models.User;
-import com.revature.revspace.models.httpmsgmodel.GroupPostMsg;
 import com.revature.revspace.services.GroupInfoService;
 import com.revature.revspace.services.GroupPostService;
 import com.revature.revspace.services.GroupThreadService;
-import com.revature.revspace.services.httpmessageservices.GroupPostMsgService;
 
 @RestController
 @CrossOrigin(origins = "http//localhost:4200")
@@ -38,10 +36,7 @@ public class GroupController
 	private GroupInfoService iService;
 	
 	@Autowired 
-	GroupPostService pService;
-	
-	@Autowired
-	GroupPostMsgService msgService;
+	private GroupPostService pService;
 	
 	
 	@PostMapping
@@ -194,6 +189,20 @@ public class GroupController
 		
 		return res;
 	}
+	@GetMapping("/{interestString}")
+	public ResponseEntity<List<GroupInfo>> getGroupsByInterest(@PathVariable("interestString") String input)
+	{
+		ResponseEntity<List<GroupInfo>> res = null;
+		List<GroupInfo> gList = iService.getGroupsByInterests(input);
+		
+		if(gList == null)
+			res = new ResponseEntity<List<GroupInfo>>(HttpStatus.NO_CONTENT);
+		else
+			res = new ResponseEntity<List<GroupInfo>>(gList, HttpStatus.OK); 
+		
+		return res;
+	}
+	
 	/*************************************************************************************************************/
 	// Group Posts, this really should be its own controller. But I've had to redo this like 3 times. So its here.
 	@PostMapping("/GroupPosts/Add")
@@ -252,5 +261,4 @@ public class GroupController
 		
 		return res;
 	}
-	
 }

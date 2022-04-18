@@ -82,5 +82,23 @@ public class GroupInfoServiceImpl implements GroupInfoService
 		}
 		return false;
 	}
-
+	@Override
+	public List<GroupInfo> getGroupsByInterests(String interest)
+	{
+		List<GroupInfo> resList = null;
+		List<GroupInfo> repoList = (List<GroupInfo>) infoRepo.findAll();
+		
+		for(GroupInfo group : repoList)
+		{
+			if(group.getInterests().toLowerCase().contains(interest))
+			{
+				if(resList == null)
+					resList = new ArrayList<GroupInfo>();
+				
+				resList.add(group);
+			}
+		}
+		
+		return resList;
+	}
 }
