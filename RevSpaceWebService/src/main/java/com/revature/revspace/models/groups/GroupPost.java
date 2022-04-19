@@ -1,6 +1,7 @@
-package com.revature.revspace.models;
+package com.revature.revspace.models.groups;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.revature.revspace.models.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -53,17 +55,9 @@ public class GroupPost
 	@OneToOne
 	@JoinColumn(name="parentId", referencedColumnName="postId")//, insert="false", update="false")
 	private GroupPost parent;
-	
-	
-//	@ManyToMany(cascade = {
-//	        CascadeType.PERSIST, 
-//	        CascadeType.MERGE
-//	    })
-//	@JoinTable(name = "grouppostlikes", joinColumns = @JoinColumn(name = "like_Id"), inverseJoinColumns = @JoinColumn(name = "post_Id"))
-//	private List<Like> likes;
-	
+
 	public GroupPost(String body, String image, String date, int numLikes, boolean comFlag, User owner, GroupPost parent)//, List<Like> list)
 	{
-		this(0, body, image, date, numLikes, comFlag, owner, parent);//, null);
+		this(0, body, image, date, numLikes, comFlag, owner, parent);
 	}
 }

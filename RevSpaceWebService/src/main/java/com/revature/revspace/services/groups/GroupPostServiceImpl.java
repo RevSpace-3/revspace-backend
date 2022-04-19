@@ -1,4 +1,4 @@
-package com.revature.revspace.services;
+package com.revature.revspace.services.groups;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,8 +8,11 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.revature.revspace.models.GroupPost;
-import com.revature.revspace.repositories.GroupPostRepository;
+
+import com.revature.revspace.models.groups.GroupLike;
+import com.revature.revspace.models.groups.GroupPost;
+import com.revature.revspace.repositories.group.GroupLikeRepository;
+import com.revature.revspace.repositories.group.GroupPostRepository;
 
 
 @Service
@@ -55,7 +58,7 @@ public class GroupPostServiceImpl implements GroupPostService
 				headPointer = findHead(p);
 				
 				if(headPointer.getPostId() == id ) // if our heads match.
-				{
+				{			
 					if(p.isComment())
 						comList.add(p);
 					else

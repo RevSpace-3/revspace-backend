@@ -1,4 +1,4 @@
-package com.revature.revspace.repositories;
+package com.revature.revspace.repositories.group;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.revature.revspace.models.GroupThread;
+import com.revature.revspace.models.groups.GroupThread;
 
 public interface GroupThreadRepository extends CrudRepository<GroupThread, Integer>
 {

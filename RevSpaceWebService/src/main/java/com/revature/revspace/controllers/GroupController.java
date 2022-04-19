@@ -16,13 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.revspace.models.GroupInfo;
-import com.revature.revspace.models.GroupPost;
-import com.revature.revspace.models.GroupThread;
 import com.revature.revspace.models.User;
-import com.revature.revspace.services.GroupInfoService;
-import com.revature.revspace.services.GroupPostService;
-import com.revature.revspace.services.GroupThreadService;
+import com.revature.revspace.models.groups.GroupInfo;
+import com.revature.revspace.models.groups.GroupLike;
+import com.revature.revspace.models.groups.GroupPost;
+import com.revature.revspace.models.groups.GroupThread;
+import com.revature.revspace.services.groups.GroupInfoService;
+import com.revature.revspace.services.groups.GroupLikeService;
+import com.revature.revspace.services.groups.GroupPostService;
+import com.revature.revspace.services.groups.GroupThreadService;
 
 @RestController
 @CrossOrigin(origins = "http//localhost:4200")
@@ -38,6 +40,14 @@ public class GroupController
 	@Autowired 
 	private GroupPostService pService;
 	
+	@Autowired
+	private GroupLikeService lService;
+	
+	/*************************************************************************************************************/
+	// Group Threads
+	
+	/***************************************************************************/
+	// Posts
 	
 	@PostMapping
 	public ResponseEntity<String> addGroupThread(@RequestBody GroupThread obj)
@@ -51,6 +61,9 @@ public class GroupController
 		
 		return res;
 	}
+	
+	/***************************************************************************/
+	// Deletes
 	@DeleteMapping("/Delete/Thread{threadId}")
 	public ResponseEntity<String> deleteGroupThread(@PathVariable("threadId") int id)
 	{
@@ -66,6 +79,9 @@ public class GroupController
 		
 		return res;
 	}
+	
+	/***************************************************************************/
+	// Gets
 	
 	@GetMapping("/GetAll")
 	public ResponseEntity<List<GroupThread>> getAllGroupThreads()
@@ -94,24 +110,13 @@ public class GroupController
 		
 		return res;
 	}
-	
-	@GetMapping("/ByMembership/{id}")
-	public ResponseEntity<List<GroupInfo>> getGroupThreadsByUser(@PathVariable("id") int id)
-	{
-		ResponseEntity<List<GroupInfo>> res = null;
-		List<GroupInfo> gList = service.getGroupThreadsByUser(id);
-		
-		if(gList == null)
-			res = new ResponseEntity<List<GroupInfo>>(HttpStatus.NO_CONTENT);
-		else
-			res = new ResponseEntity<List<GroupInfo>>(gList, HttpStatus.OK); 
-		
-		return res;
-	}
+
 	
 	/*************************************************************************************************************/
 	// Threads
 	
+	/***************************************************************************/
+	// Gets
 	@GetMapping("/ByUnique")
 	public ResponseEntity<List<GroupThread>> getUniqueGroupThreads()
 	{
@@ -155,8 +160,12 @@ public class GroupController
 	}
 
 	/*************************************************************************************************************/
-	// Group Info
+	// Group Info 
+	// 					Just a heads up I'm inserting these when I create threads, 
+	// 					thread is the users tie to a group
 	
+	/***************************************************************************/
+	// Deletes
 	@DeleteMapping("/Delete/{id}")
 	public ResponseEntity<String> deleteGroupInfo(@PathVariable("id") int id) // Always returns false
 	{
@@ -176,6 +185,8 @@ public class GroupController
 		return res;
 	}
 	
+	/***************************************************************************/
+	// Gets
 	@GetMapping("/GetOthers/{id}")
 	public ResponseEntity<List<GroupInfo>> getOthers(@PathVariable("id") int id)
 	{
@@ -202,9 +213,27 @@ public class GroupController
 		
 		return res;
 	}
+	@GetMapping("/ByMembership/{id}")
+	public ResponseEntity<List<GroupInfo>> getGroupThreadsByUser(@PathVariable("id") int id)
+	{
+		ResponseEntity<List<GroupInfo>> res = null;
+		List<GroupInfo> gList = service.getGroupThreadsByUser(id);
+		
+		if(gList == null)
+			res = new ResponseEntity<List<GroupInfo>>(HttpStatus.NO_CONTENT);
+		else
+			res = new ResponseEntity<List<GroupInfo>>(gList, HttpStatus.OK); 
+		
+		return res;
+	}
 	
 	/*************************************************************************************************************/
-	// Group Posts, this really should be its own controller. But I've had to redo this like 3 times. So its here.
+	// Group Posts
+	//				this really should be its own controller. 
+	
+	/***************************************************************************/
+	// Posts
+	
 	@PostMapping("/GroupPosts/Add")
 	public ResponseEntity<GroupPost> addGroupPost(@RequestBody GroupPost post)
 	{
@@ -212,17 +241,14 @@ public class GroupController
 		
 		if(post == null)
 			res = new ResponseEntity<GroupPost>(HttpStatus.NO_CONTENT);
-		else
-		{
-//			GroupPost object = pService.unboxMsg(post);
-//			GroupPost resAdd = pService.addGroupPost(object);
-//			GroupPostMsg response = new GroupPostMsg(resAdd); // I can do this on a single line this is just so you understand what is going on...
-			
+		else	
 			res = new ResponseEntity<GroupPost>(pService.addGroupPost(post), HttpStatus.OK);
-		}
 		
 		return res;
 	}
+	
+	/***************************************************************************/
+	// Deletes
 	@DeleteMapping("/GroupPosts/Delete/{id}")
 	public ResponseEntity<String> deleteGroupPost(@PathVariable("id") int id)
 	{
@@ -240,6 +266,8 @@ public class GroupController
 		return res;
 	}
 	
+	/***************************************************************************/
+	// Gets
 	@GetMapping("/GroupPosts/{postHeadId}")
 	public ResponseEntity<List<List<GroupPost>>> getGroupPosts(@PathVariable("postHeadId") int id)
 	{
@@ -261,4 +289,71 @@ public class GroupController
 		
 		return res;
 	}
+	
+	
+	/*************************************************************************************************************/
+	// Group Likes
+	
+	/***************************************************************************/
+	// Post
+	@PostMapping("/GroupLikes")
+	public ResponseEntity<GroupLike> addGroupLike(@RequestBody GroupLike like)
+	{
+		ResponseEntity<GroupLike> res = null;
+		GroupLike result = lService.addGroupLike(like);
+	
+		if(like == null)
+			res = new ResponseEntity<GroupLike>(HttpStatus.NO_CONTENT);
+		else
+			res = new ResponseEntity<GroupLike>(result, HttpStatus.OK);
+		
+		return res;
+	}
+	/***************************************************************************/
+	// Deletes
+	@DeleteMapping("/GroupLikes/{postId}")
+	public ResponseEntity<String> deleteGroupLikes(@PathVariable("postId") int id)
+	{
+		ResponseEntity<String> res = null;
+		String result = lService.deleteGroupLike(id);
+	
+		if(id <= 0)
+			res = new ResponseEntity<String> (HttpStatus.NO_CONTENT);
+		else
+			res = new ResponseEntity<String> (result, HttpStatus.OK);
+		
+		return res;
+	}
+	/***************************************************************************/
+	// Gets
+	
+	@GetMapping("/GroupLikes/{postId}")
+	public ResponseEntity<List<GroupLike>> getGroupLikes(@PathVariable("postId") int id)
+	{
+		ResponseEntity<List<GroupLike>> res = null;
+		List<GroupLike> resList = lService.getGroupLikesByPostId(id);
+	
+		if(id <= 0)
+			res = new ResponseEntity<List<GroupLike>> (HttpStatus.NO_CONTENT);
+		else
+			res = new ResponseEntity<List<GroupLike>> (resList, HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/GroupLikes/Group{postId}")
+	public ResponseEntity<List<GroupLike>> getGroupLikesByGroup(@PathVariable("postId") int id)
+	{
+		ResponseEntity<List<GroupLike>> res = null;
+		List<GroupLike> resList = lService.getGroupLikesByGroupHead(id);
+	
+		if(id <= 0)
+			res = new ResponseEntity<List<GroupLike>> (HttpStatus.NO_CONTENT);
+		else
+			res = new ResponseEntity<List<GroupLike>> (resList, HttpStatus.OK);
+		
+		return res;
+	}
+	/*************************************************************************************************************/
+
 }

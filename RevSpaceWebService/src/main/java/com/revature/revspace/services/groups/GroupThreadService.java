@@ -1,10 +1,10 @@
-package com.revature.revspace.services;
+package com.revature.revspace.services.groups;
 
 import java.util.List;
 
-import com.revature.revspace.models.GroupInfo;
-import com.revature.revspace.models.GroupThread;
 import com.revature.revspace.models.User;
+import com.revature.revspace.models.groups.GroupInfo;
+import com.revature.revspace.models.groups.GroupThread;
 
 public interface GroupThreadService 
 {

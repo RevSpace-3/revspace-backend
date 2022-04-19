@@ -1,4 +1,4 @@
-package com.revature.revspace.models;
+package com.revature.revspace.models.groups;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.revature.revspace.models.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

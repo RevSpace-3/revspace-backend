@@ -1,4 +1,4 @@
-package com.revature.revspace.services;
+package com.revature.revspace.services.groups;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,11 +10,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.revspace.models.GroupInfo;
-import com.revature.revspace.models.GroupThread;
 import com.revature.revspace.models.User;
-import com.revature.revspace.repositories.GroupInfoRepository;
-import com.revature.revspace.repositories.GroupThreadRepository;
+import com.revature.revspace.models.groups.GroupInfo;
+import com.revature.revspace.models.groups.GroupThread;
+import com.revature.revspace.repositories.group.GroupInfoRepository;
+import com.revature.revspace.repositories.group.GroupThreadRepository;
 
 @Service
 public class GroupThreadServiceImpl implements GroupThreadService 
@@ -24,6 +24,7 @@ public class GroupThreadServiceImpl implements GroupThreadService
 	
 	@Autowired
 	GroupInfoRepository infoRepo;
+	
 	
 	@Override
 	public GroupThread addGroupThread(GroupThread obj) 

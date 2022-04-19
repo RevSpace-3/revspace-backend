@@ -1,8 +1,8 @@
-package com.revature.revspace.services;
+package com.revature.revspace.services.groups;
 
 import java.util.List;
 
-import com.revature.revspace.models.GroupPost;
+import com.revature.revspace.models.groups.GroupPost;
 
 public interface GroupPostService 
 {

@@ -1,4 +1,4 @@
-package com.revature.revspace.services;
+package com.revature.revspace.services.groups;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.revspace.models.GroupInfo;
 import com.revature.revspace.models.User;
-import com.revature.revspace.repositories.GroupInfoRepository;
+import com.revature.revspace.models.groups.GroupInfo;
+import com.revature.revspace.repositories.group.GroupInfoRepository;
 
 @Service
 public class GroupInfoServiceImpl implements GroupInfoService 
