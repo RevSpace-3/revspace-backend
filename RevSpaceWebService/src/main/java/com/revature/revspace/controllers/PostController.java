@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class PostController
@@ -109,6 +110,38 @@ public class PostController
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
     }
+    
+    @GetMapping("/posts/GroupPosts/{groupHeadId}")
+    public ResponseEntity<List<Post>> getPostsByGroupId(@PathVariable("groupHeadId") int id)
+    {
+    	ResponseEntity<List<Post>> res = null;
+    	List<Post> tSet = pos.getPostsByGroupId(id);
+    	List<Post> pList = new ArrayList<Post>();
+    	
+    	if(id <= 0 || tSet == null)
+    		res = new ResponseEntity<List<Post>>(HttpStatus.NO_CONTENT);
+    	else
+    	{
+    		//pList.add(tSet);
+    		res = new ResponseEntity<List<Post>>(tSet, HttpStatus.OK);
+    	}
+    	
+    	return res;
+    }
+    @GetMapping("/posts/GroupComments/{groupId}")
+    public ResponseEntity<List<Post>> getGroupComments(@PathVariable("groupId") int id)
+    {
+    	ResponseEntity<List<Post>> res = null;
+    	List<Post> comments = pos.getCommentsByGroupId(id);
+    	
+    	if(comments.isEmpty() || comments == null)
+    		res = new ResponseEntity<List<Post>>(HttpStatus.NO_CONTENT);
+    	else
+    		res = new ResponseEntity<List<Post>>(comments, HttpStatus.OK);
+    	
+    	return res;
+    }
+    
 
     //Update Post By ID
     @PutMapping(value = "/posts", consumes = "application/json", produces = "application/json")

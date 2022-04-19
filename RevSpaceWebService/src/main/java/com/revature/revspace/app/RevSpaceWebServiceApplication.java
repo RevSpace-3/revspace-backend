@@ -14,6 +14,7 @@ public class RevSpaceWebServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RevSpaceWebServiceApplication.class, args);
+		
 	}
 
 }
